@@ -14,7 +14,7 @@
         android:theme="@style/Theme.GifBucket"
         tools:targetApi="31">
         <activity
-            android:name=".ContainerActivity"
+            android:name=".presentation.activities.ContainerActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.GifBucket.NoActionBar">
