@@ -8,3 +8,96 @@ plugins {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+ext {
+
+    appVersionName = "8.1.3"
+    minSDKVersion = 26
+    renderScriptTargetAPI = 16
+    targetSDKVersion = 30
+    compileSDKVersion = 30
+    renderScriptTargetAPI = 16
+    buildToolsVersion = "30.0.3"
+    playServicesVersion = "11.8.0"
+    rxAndroidVersion = "1.2.1"
+    rxJavaVersion = "1.3.8"
+    rxjava2Version = "2.1.0"
+    rxjava2_adapter_version = "1.0.0"
+    picassoVersion = "2.71828"
+    butterknifeVersion = '10.2.1'
+    crashlyticsVersion = "2.6.8"
+    crashlyticsNdkVersion = "1.1.6"
+    multidexVersion = "2.0.1"
+    okHttpLoggingInterceptorVersion = '5.0.0-alpha.10'
+    gsonVersion = '2.9.1'
+    jacksonVersion = '2.10.0.pr2'
+    retrofitVersion = "2.9.0"
+    retrofitRxjavaAdapterVersion = '2.9.0'
+    retrofitGsonConverterVersion = '2.9.0'
+    retrofitJacksonConverterVersion = '2.9.0'
+    retrofitScalarsConverterVersion = '2.9.0'
+
+    httpmimeVersion = "4.5.10"
+    quickbloxVersion = "3.9.10"
+    guavaVersion = '28.1-jre'
+    commonsIoVersion = "2.6"
+    constraintLayoutVersion = "2.0.4"
+    roomVersion = '2.4.3'
+    lifecycleExtensionsVersion = "2.1.0"
+    h2DBVersion = "1.3.165"
+    pdfViewerVersion = "3.2.0-beta.1"
+    greenDaoVersion = "3.3.0"
+    greenrobotEventbusVersion = "3.2.0"
+    androidImageCopperVersion = "2.6.0"
+
+    junitVersion = "4.13.2"
+    mockitoVersion = '1.10.19'
+    androidSupportTestVersion = '1.3.0'
+
+    daggerVersion = '2.43.2'
+
+    firebaseVersion = "22.0.0"
+    firebaseAnalyticsVersion = "19.0.0"
+
+    ucropVersion = "2.2.2"
+
+    legacySupportVersion = "1.0.0"
+    appCompactVersion = "1.3.0"
+    recyclerviewVersion = '1.2.1'
+    cardviewVersion = "1.0.0"
+    materialDesignVersion = "1.4.0"
+    robolectricVersion = "4.2.1"
+    robolectricshadowsVersion = "4.2"
+    mockwebserverVersion = '5.0.0-alpha.10'
+    dexterVersion = "6.0.0"
+    reactivestreamsVersion = "1.0.3"
+    nineoldandroidsVersion = "2.4.0"
+    droidsonroidsgifVersion = "1.2.19"
+    wangVersion = "2.1.3"
+    photoViewVersion = "1.3.1"
+    jodatimeVersion = "2.10.4"
+    keyboardwatcherVersion = "0.1.3"
+    jncryptorVersion = "1.2.0"
+    shapeimageviewVersion = "0.9.3"
+    swipelayoutVersion = "1.2.0"
+    androidanimationsVersion = "2.3"
+    firebasecrashlyticsVersion = "18.0.0"
+    firebaseinstallationsVersion = "17.0.0"
+    kotlin_version = '1.5.10'
+    firebasePerformanceVersion = '20.0.0'
+    pdfBoxVersion = "1.8.10.1"
+    workerVersion = "2.5.0"
+    coroutines_version_core = '1.6.4'
+    coroutines_version_android = '1.6.4'
+    coroutines_version_debug = '1.6.4'
+    navigation_fragment_ktx_version = "2.3.5"
+    lifecycle_version = '2.5.1'
+    lifecycle_extensions_version = "2.2.0"
+    legacy_support_version = "1.0.0"
+    google_playservices_location_version = "18.0.0"
+    google_places_version = "2.4.0"
+    google_truth_version = '1.1.3'
+    test_core_version = "1.4.0"
+    volley_version = "1.2.0"
+    androidx_arch_core_testing_version = "2.1.0"
+    dagger_android = '2.43.2'
+}

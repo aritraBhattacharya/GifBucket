@@ -1,7 +1,8 @@
-package com.aritra.gifbucket
+package com.aritra.gifbucket.presentation.activities
 
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -11,12 +12,22 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.aritra.gifbucket.GifBucketApplication
+import com.aritra.gifbucket.R
+import com.aritra.gifbucket.data.remote.network.GifAPI
 import com.aritra.gifbucket.databinding.ActivityContainerBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class ContainerActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityContainerBinding
+    @Inject
+    lateinit var retrofitAPI: GifAPI
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +36,6 @@ class ContainerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarContainer.toolbar)
-
         binding.appBarContainer.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
@@ -42,6 +52,7 @@ class ContainerActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        GifBucketApplication.appInstance.appComponent.inject(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -53,5 +64,15 @@ class ContainerActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_container)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val response = retrofitAPI.getSearchedGif(q = "beach")
+            withContext(Dispatchers.Main){
+                Toast.makeText(this@ContainerActivity,""+response.isSuccessful,Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
