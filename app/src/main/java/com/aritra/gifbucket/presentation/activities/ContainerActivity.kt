@@ -2,6 +2,7 @@ package com.aritra.gifbucket.presentation.activities
 
 import android.os.Bundle
 import android.view.Menu
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -12,11 +13,15 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.aritra.gifbucket.GifBucketApplication
 import com.aritra.gifbucket.R
 import com.aritra.gifbucket.data.remote.network.GifAPI
+import com.aritra.gifbucket.data.utils.Status
 import com.aritra.gifbucket.databinding.ActivityContainerBinding
+import com.aritra.gifbucket.presentation.viewmodels.factories.GifSearchVMFactory
+import com.aritra.gifbucket.presentation.viewmodels.vm.GifSearchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,8 +31,10 @@ class ContainerActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityContainerBinding
+
     @Inject
-    lateinit var retrofitAPI: GifAPI
+    lateinit var factory: GifSearchVMFactory
+    private lateinit var viewModel: GifSearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +59,9 @@ class ContainerActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        // coded by me now
         GifBucketApplication.appInstance.appComponent.inject(this)
+        viewModel = ViewModelProvider(this,factory).get(GifSearchViewModel::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -68,11 +77,20 @@ class ContainerActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launch(Dispatchers.IO) {
-            val response = retrofitAPI.getSearchedGif(q = "beach")
-            withContext(Dispatchers.Main){
-                Toast.makeText(this@ContainerActivity,""+response.isSuccessful,Toast.LENGTH_SHORT).show()
-            }
+        lifecycleScope.launch{
+           viewModel.getGifSearchResult("beach").observe(this@ContainerActivity){
+               when(it.status){
+                   Status.SUCCESS ->{
+                       Toast.makeText(this@ContainerActivity,"successfully loaded ${it.data?.gifData?.size} number of data",Toast.LENGTH_SHORT).show()
+                   }
+                   Status.ERROR ->{
+                       Toast.makeText(this@ContainerActivity,"ERROR! ${it.message}",Toast.LENGTH_SHORT).show()
+                   }
+                   Status.LOADING ->{
+                       Toast.makeText(this@ContainerActivity,"loading.....",Toast.LENGTH_SHORT).show()
+                   }
+               }
+           }
         }
     }
 }
