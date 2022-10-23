@@ -86,12 +86,18 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     testImplementation "com.squareup.okhttp3:mockwebserver:${rootProject.ext.mockwebserverVersion}"
-    testImplementation "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    //testImplementation "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
     testImplementation "androidx.test:core:${rootProject.ext.test_core_version}"
     testImplementation "com.google.truth:truth:${rootProject.ext.google_truth_version}"
     testImplementation "androidx.arch.core:core-testing:${rootProject.ext.androidx_arch_core_testing_version}"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${rootProject.ext.coroutines_version_android}"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.ext.coroutines_version_android}"
+
+
+    //mockito
+    testImplementation "org.mockito:mockito-core:4.0.0"
+    testImplementation "org.mockito:mockito-inline:4.0.0"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
 
     //dagger
     implementation "com.google.dagger:dagger:${rootProject.ext.daggerVersion}"
