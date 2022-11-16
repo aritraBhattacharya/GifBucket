@@ -32,7 +32,7 @@ class GifSearchViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
-    var coroutinesTestRule = CoroutineTestRule()
+    var coroutinesTestRule = CoroutineTestRule() // to provide main dispatcher
 
 
     private lateinit var mockUseCase: GifSearchUseCase
@@ -52,13 +52,25 @@ class GifSearchViewModelTest {
         runTest {
             val mockSearchSuccessfulResponse = createFakeResponse("SearchResponse.json", 201)
             `when`(mockUseCase.searchGif("beach")).thenReturn(Resource.success(mockSearchSuccessfulResponse))
+
+            // pass the mock usecase to viewmodel
             val gifSearchVM = GifSearchViewModel(mockUseCase)
+
+            // ----------- VERY IMP: CAPTURE ALL RESPONSES FROM LIVEDATA -------------------
             val listOfResponses = arrayListOf<Resource<GifSearchResponse>>()
             gifSearchVM.getGifSearchResult("beach").observeForever{res ->
                 listOfResponses.add(res)
             }
+            //--------------------------------------------------------------------------------
             Truth.assertThat(listOfResponses[0].status).isEqualTo(Status.LOADING)
             Truth.assertThat(listOfResponses[1].status).isEqualTo(Status.SUCCESS)
+
+
+            //---------- IF YOU DONT HAVE LIST OF VALUES TO CHECK, JUST A ONE TIME LIVE DATA VALUE CHECK THEN
+            //GET_OR_AWAIT_VALUE
+            //gifSearchVM.call_Network_Fun_that_updates_a_livedata_called_livedataResponse_in_viewmodel("beach").getOrAwaitValue {  }
+            //livedataTestValue = gifSearchVM.livedataResponse.getOrAwaitValue {  }
+            // Truth.assertThat(livedataTestValue.status).isEqualTo(Status.SUCCESS)
 
         }
     }

@@ -17,6 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.aritra.gifbucket.GifBucketApplication
 import com.aritra.gifbucket.R
+import com.aritra.gifbucket.data.local.db.GifDao
+import com.aritra.gifbucket.data.local.db.GifDataBase
 import com.aritra.gifbucket.data.remote.network.GifAPI
 import com.aritra.gifbucket.data.utils.Status
 import com.aritra.gifbucket.databinding.ActivityContainerBinding
@@ -34,6 +36,8 @@ class ContainerActivity : AppCompatActivity() {
 
     @Inject
     lateinit var factory: GifSearchVMFactory
+    @Inject
+    lateinit var gifDao: GifDao
     private lateinit var viewModel: GifSearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +66,7 @@ class ContainerActivity : AppCompatActivity() {
         // coded by me now
         GifBucketApplication.appInstance.appComponent.inject(this)
         viewModel = ViewModelProvider(this,factory).get(GifSearchViewModel::class.java)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -82,6 +87,12 @@ class ContainerActivity : AppCompatActivity() {
                when(it.status){
                    Status.SUCCESS ->{
                        Toast.makeText(this@ContainerActivity,"successfully loaded ${it.data?.gifData?.size} number of data",Toast.LENGTH_SHORT).show()
+                       lifecycleScope.launch(Dispatchers.IO){
+                           val numberOfGifs = gifDao.getAllGifs().size.toString()
+                           withContext(Dispatchers.Main){
+                               Toast.makeText(this@ContainerActivity,"numbers in db  $numberOfGifs",Toast.LENGTH_SHORT).show()
+                           }
+                       }
                    }
                    Status.ERROR ->{
                        Toast.makeText(this@ContainerActivity,"ERROR! ${it.message}",Toast.LENGTH_SHORT).show()

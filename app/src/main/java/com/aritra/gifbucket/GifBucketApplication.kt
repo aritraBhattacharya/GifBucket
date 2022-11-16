@@ -3,6 +3,7 @@ package com.aritra.gifbucket
 import android.app.Application
 import com.aritra.gifbucket.di.components.AppComponent
 import com.aritra.gifbucket.di.components.DaggerAppComponent
+import com.aritra.gifbucket.di.modules.DBModule
 import com.aritra.gifbucket.di.modules.NetworkModule
 
 class GifBucketApplication : Application() {
@@ -15,7 +16,9 @@ class GifBucketApplication : Application() {
         appInstance = this
         appComponent = DaggerAppComponent.factory().create(
             this,
-            NetworkModule()
+            this,
+            NetworkModule(),
+            DBModule()
         )
     }
 
