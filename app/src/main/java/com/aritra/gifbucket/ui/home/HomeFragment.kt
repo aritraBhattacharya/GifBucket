@@ -1,17 +1,13 @@
 package com.aritra.gifbucket.ui.home
 
-import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,10 +21,7 @@ import com.aritra.gifbucket.databinding.FragmentHomeBinding
 import com.aritra.gifbucket.presentation.adapters.GifAdapter
 import com.aritra.gifbucket.presentation.viewmodels.vm.GifSearchViewModel
 import com.aritra.gifbucket.ui.utils.observeDebounceCheck
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
@@ -53,7 +46,10 @@ class HomeFragment : Fragment() {
 
         navBtn = binding.homeNavBtn
         gifRecyclerView = binding.gifRv
-        gifAdapter = GifAdapter()
+        gifAdapter = GifAdapter{url,title->
+            Toast.makeText(requireContext(),"clicked item: $title",Toast.LENGTH_SHORT).show()
+            handleGifItemClick(url, title)
+        }
 
         prepareRecyclerView()
         setClickListener()
@@ -84,40 +80,9 @@ class HomeFragment : Fragment() {
         binding.gifEt.observeDebounceCheck()
             .filterNot { it.isNullOrBlank() }
             .debounce(600)
-            .flatMapLatest {startGifSearch(it.toString()) }
+            .flatMapLatest { startGifSearch(it.toString()) }
             .onEach { updateUIOnGifSearch(it) }
             .launchIn(lifecycleScope)
-
-
-//        lifecycleScope.launch{
-//            viewModel.getGifSearchResult("beach").observe(viewLifecycleOwner){
-//                when(it.status){
-//                    Status.SUCCESS ->{
-//                        Toast.makeText(requireActivity(),"successfully loaded ${it.data?.gifData?.size} number of data",
-//                            Toast.LENGTH_SHORT).show()
-//                        var listOfGifs:List<GifUIModel>?  = it.data?.gifData?.map {
-//                            it->
-//                            GifUIModel(it.images.downsized_large.url,it.title)
-//                        }
-//                        listOfGifs?.let { submitListToRV(it)}
-//                        lifecycleScope.launch(Dispatchers.IO){
-//                            val numberOfGifs = gifDao.getAllGifs().size.toString()
-//                            withContext(Dispatchers.Main){
-//                                Toast.makeText(this@ContainerActivity,"numbers in db  $numberOfGifs",
-//                                    Toast.LENGTH_SHORT).show()
-//                            }
-//                        }
-//
-//                    }
-//                    Status.ERROR ->{
-//                        Toast.makeText(requireActivity(),"ERROR! ${it.message}", Toast.LENGTH_SHORT).show()
-//                    }
-//                    Status.LOADING ->{
-//                        Toast.makeText(requireActivity(),"loading.....", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            }
-//        }
     }
 
     private fun startGifSearch(it: String): Flow<Resource<GifSearchResponse>> {
@@ -150,6 +115,10 @@ class HomeFragment : Fragment() {
                 binding.gifSearchProgress.visibility = View.VISIBLE
             }
         }
+    }
+
+    fun handleGifItemClick(urlStr:String,title:String){
+        findNavController().navigate(R.id.action_nav_home_to_nav_gallery)
     }
 
     override fun onDestroyView() {
