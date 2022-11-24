@@ -82,26 +82,26 @@ class ContainerActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launch{
-           viewModel.getGifSearchResult("beach").observe(this@ContainerActivity){
-               when(it.status){
-                   Status.SUCCESS ->{
-                       Toast.makeText(this@ContainerActivity,"successfully loaded ${it.data?.gifData?.size} number of data",Toast.LENGTH_SHORT).show()
-                       lifecycleScope.launch(Dispatchers.IO){
-                           val numberOfGifs = gifDao.getAllGifs().size.toString()
-                           withContext(Dispatchers.Main){
-                               Toast.makeText(this@ContainerActivity,"numbers in db  $numberOfGifs",Toast.LENGTH_SHORT).show()
-                           }
-                       }
-                   }
-                   Status.ERROR ->{
-                       Toast.makeText(this@ContainerActivity,"ERROR! ${it.message}",Toast.LENGTH_SHORT).show()
-                   }
-                   Status.LOADING ->{
-                       Toast.makeText(this@ContainerActivity,"loading.....",Toast.LENGTH_SHORT).show()
-                   }
-               }
-           }
-        }
+//        lifecycleScope.launch{
+//           viewModel.getGifSearchResult("beach").observe(this@ContainerActivity){
+//               when(it.status){
+//                   Status.SUCCESS ->{
+//                       Toast.makeText(this@ContainerActivity,"successfully loaded ${it.data?.gifData?.size} number of data",Toast.LENGTH_SHORT).show()
+//                       lifecycleScope.launch(Dispatchers.IO){
+//                           val numberOfGifs = gifDao.getAllGifs().size.toString()
+//                           withContext(Dispatchers.Main){
+//                               Toast.makeText(this@ContainerActivity,"numbers in db  $numberOfGifs",Toast.LENGTH_SHORT).show()
+//                           }
+//                       }
+//                   }
+//                   Status.ERROR ->{
+//                       Toast.makeText(this@ContainerActivity,"ERROR! ${it.message}",Toast.LENGTH_SHORT).show()
+//                   }
+//                   Status.LOADING ->{
+//                       Toast.makeText(this@ContainerActivity,"loading.....",Toast.LENGTH_SHORT).show()
+//                   }
+//               }
+//           }
+//        }
     }
 }

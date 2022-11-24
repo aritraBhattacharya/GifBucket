@@ -122,6 +122,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.ext.coroutines_version_android}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-debug:${rootProject.ext.coroutines_version_debug}"
 
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
     // WorkManager
     implementation('androidx.work:work-runtime-ktx:2.7.0-alpha03') {
         exclude group: 'org.jetbrains.kotlinx'
