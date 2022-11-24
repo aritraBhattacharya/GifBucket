@@ -22,7 +22,13 @@
         tools:layout="@layout/fragment_gallery" >
         <action
             android:id="@+id/action_nav_gallery_to_nav_slideshow"
-            app:destination="@id/nav_slideshow" />
+            app:destination="@id/nav_slideshow"/>
+<!--        <argument-->
+<!--            android:name="a"-->
+<!--            android:defaultValue="0"-->
+<!--            app:argType="String"-->
+<!--            app:nullable="true"-->
+<!--            />-->
     </fragment>
 
     <fragment
